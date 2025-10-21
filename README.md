@@ -38,17 +38,12 @@ Estas dos técnicas optimizan tanto la precisión como el desempeño general del
 El conjunto de datos contiene información sobre pacientes y sus características médicas, con el objetivo de predecir si tienen diabetes o no.
 El conjunto de datos incluye las siguientes características:
 
-Edad
-
-Glucosa
-
-Presión Arterial
-
-IMC (Índice de Masa Corporal)
-
-Historia Familiar de Diabetes
-
-Número de Embarazos (en mujeres)
+-Edad
+-Glucosa
+-Presión Arterial
+-IMC (Índice de Masa Corporal)
+-Historia Familiar de Diabetes
+-Número de Embarazos (en mujeres)
 
 La variable objetivo, outcome, es binaria (0 para no diabético y 1 para diabético), y es el objetivo principal de la predicción.
 Este es un problema de clasificación binaria donde se busca identificar a los pacientes con mayor riesgo de desarrollar diabetes.
