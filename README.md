@@ -57,3 +57,150 @@ El modelo tiene más facilidad para predecir correctamente a los pacientes diab�
 
 El sesgo se observa principalmente en la matriz de confusión, donde la clase "no diabéticos" muestra una menor tasa de recall y precisión.
 Este desbalance puede ser mitigado utilizando técnicas como el rebalanceo de clases o ajustando el umbral de clasificación para mejorar el rendimiento en la clase minoritaria.
+
+
+
+
+
+
+Parte 2. Funcionamieno del Algoritmo
+
+🧠 ML Insurance and Diabetes Prediction
+
+Este proyecto implementa dos modelos de *Machine Learning*:
+
+1. Predicción de costos de seguro médico (modelo de regresión lineal)
+2. Predicción de diabetes (modelo de clasificación con Regresión Logística)
+
+Ambos modelos se integran en una aplicación web que permite realizar predicciones mediante una API desarrollada con FastAPI y una interfaz gráfica creada con Streamlit.
+
+------------------------------------------------------------
+🎯 Objetivos del proyecto
+
+- Entrenar y evaluar dos modelos predictivos: uno para costos médicos y otro para diagnóstico de diabetes.
+- Comparar el rendimiento y las variables más influyentes en cada modelo.
+- Implementar técnicas de optimización y selección de umbral.
+- Desplegar los modelos en un servicio web con interfaz visual interactiva.
+
+------------------------------------------------------------
+📂 Estructura del proyecto
+
+ml-insurance-diabetes/
+│
+├── data/                      # Datos crudos y limpios
+├── notebooks/                 # Jupyter Notebooks (EDA y entrenamiento)
+├── src/                       # Scripts de entrenamiento y análisis
+│   ├── train_diabetes.py
+│   ├── train_regression.py
+│   ├── rf_compare.py
+│   └── optimize.py
+│
+├── app/                       # Backend (API) e interfaz gráfica (UI)
+│   ├── api.py                 # FastAPI
+│   └── ui.py                  # Streamlit
+│
+├── models/                    # Modelos entrenados (.pkl)
+├── requirements.txt           # Dependencias
+├── Dockerfile                 # Para ejecución en contenedor
+└── README.md                  # Este documento
+
+------------------------------------------------------------
+⚙️ Requisitos
+
+Antes de ejecutar la aplicación, asegúrate de tener instalado:
+
+- Python 3.9 o superior
+- pip (gestor de paquetes de Python)
+- Git (opcional, si clonas desde GitHub)
+- Editor (Visual Studio Code recomendado)
+
+Instala las dependencias ejecutando:
+
+pip install -r requirements.txt
+
+------------------------------------------------------------
+🚀 Ejecución de la aplicación
+
+1. Entrenar los modelos
+   - Coloca tus datasets en la carpeta data/
+     (por ejemplo diabetes.csv y insurance.csv).
+
+   - Ejecuta los siguientes comandos:
+
+     python src/train_diabetes.py
+     python src/train_regression.py
+
+   Esto generará los modelos entrenados dentro de la carpeta models/.
+
+2. Ejecutar el Backend (API con FastAPI)
+
+   cd app
+   uvicorn api:app --reload
+
+   El servidor se iniciará en:
+   http://127.0.0.1:8000
+
+   Puedes acceder a:
+   - /docs → Documentación interactiva (Swagger)
+   - /predict/diabetes → Endpoint para predecir diabetes
+   - /predict/insurance → Endpoint para predecir costos médicos
+
+3. Ejecutar la Interfaz Gráfica (Streamlit)
+
+   streamlit run app/ui.py
+
+   Se abrirá una ventana del navegador con la interfaz donde puedes ingresar valores como glucosa, edad, IMC, fumador, etc., y obtener las predicciones visualmente.
+
+4. (Opcional) Ejecutar con Docker
+
+   docker build -t ml-app .
+   docker run -p 8000:8000 ml-app
+
+------------------------------------------------------------
+🧩 Detalles Técnicos de los Modelos
+
+Modelo de Diabetes
+- Algoritmo: Regresión Logística
+- Umbral óptimo: 0.5 (criterio de Youden)
+- Precisión general: 83%
+- Características más influyentes: Glucosa, IMC, Edad y Función de Pedigrí
+
+Modelo de Costos Médicos
+- Algoritmo: Regresión Lineal / ElasticNet
+- Factores más influyentes: Edad, IMC y Tabaquismo
+- Métrica principal: MAE y RMSE
+
+------------------------------------------------------------
+🧠 Técnicas de Optimización Implementadas
+
+- Normalización de características con StandardScaler
+- Búsqueda de hiperparámetros con GridSearchCV
+- Comparación de importancia de variables con RandomForest
+- Evaluación cruzada (Cross-Validation) con KFold y RepeatedStratifiedKFold
+
+------------------------------------------------------------
+📊 Sesgo y Análisis de los Modelos
+
+- Se detectó sesgo hacia la clase positiva (diabéticos), debido al desbalance en los datos.  
+  El modelo tiende a clasificar más fácilmente a pacientes diabéticos que a no diabéticos.  
+- Se recomienda ajustar el umbral o aplicar técnicas de rebalanceo de clases.  
+- En el modelo de costos médicos, se observa un sesgo leve asociado al tabaquismo y la edad, ya que ambos factores tienden a incrementar el costo estimado.
+
+------------------------------------------------------------
+✅ Flujo Rápido de Ejecución
+
+Paso | Comando | Descripción
+------|----------|-------------
+1 | pip install -r requirements.txt | Instala dependencias
+2 | python src/train_diabetes.py | Entrena el modelo de diabetes
+3 | python src/train_regression.py | Entrena el modelo de costos médicos
+4 | uvicorn app.api:app --reload | Inicia la API backend
+5 | streamlit run app/ui.py | Abre la interfaz web
+
+------------------------------------------------------------
+📘 Créditos
+
+Desarrollado por Max (INACAP Valdivia)
+Proyecto académico de integración para el módulo de Machine Learning y Despliegue Web.
+Incluye análisis de modelos, comparación con RandomForest y optimización con GridSearchCV 
+BASADOS EN LOS MODELOS DE KRAGGLE.
